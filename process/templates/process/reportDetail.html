@@ -1,0 +1,15 @@
+<h1>{{ report.title }}</h1><br>
+{{ report.startDate }}<br>
+{{ report.endDate }}<br>
+{{ report.description }}<br>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+
+{% csrf_token %}
+{% for stage in report.stage.all %}
+    <!-- <input type="radio" name="stage" id="stage{{ forloop.counter }}" value="{{ stage.id }}" /> -->
+    <label for="stage{{ forloop.counter }}"><a href="{% url 'process:stageDetail' stage.id %}">{{ stage.title }}</label><br />
+{% endfor %}
+
+{{ report.stage.process_set.all }}<br>
