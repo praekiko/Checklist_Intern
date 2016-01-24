@@ -4,23 +4,20 @@
 <script type="" src="{% static 'process/bower_components/bootstrap/dist/js/bootstrap.js' %}"></script>
 
 <h1>{{ report.title }}</h1>
-<a href="{% url 'process:index' %}" class="btn btn-primary btn-xs" ><span class="glyphicon glyphicon-home" aria-hidden="true"></span> HOME</a><br>
+<a href="{% url 'process:index' %}" class="btn btn-default btn-xs" ><span class="glyphicon glyphicon-home" aria-hidden="true"></span> HOME</a><br>
 
 <b>Start Date:</b> {{ report.startDate }}<br>
 <b>End Date:</b> {{ report.endDate }}<br>
-<b>Description:</b> {{ report.description }}<br>
+<b>Description:</b> {{ report.description }}<br><br>
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
 
-
-
 {% for stage in report.stage.all %}
-    <!-- <input type="radio" name="stage" id="stage{{ forloop.counter }}" value="{{ stage.id }}" /> -->
     <form action="{% url 'process:completedProcess' stage.id %}" method="post">
     	{% csrf_token %}
     
-    <div class="panel panel-primary">
+    <div class="panel panel-default">
 	  <!-- <div class="panel-heading"><a href="{% url 'process:stageDetail' stage.id %}">{{ stage.title }}</a></div> -->
 	  <div class="panel-heading">{{ stage.title }}</div>
 	  <div class="panel-body">
@@ -28,10 +25,18 @@
 
 		    <ul class="list-group">
 		    	<li class="list-group-item">
-		    		<span class="badge" {% if process.isCompleted == True %} {% endif %}>Completed</span>
 					{{ process.title }}
+					{% if process.isCompleted == True %} 
+						<span class="badge" >Completed</span>
+					{% endif %}
 					<div class="checkbox">
-		                <label><input type="checkbox" name="process" id="process{{ forloop.counter }}" value="{{ process.id }}" {% if process.isCompleted %} checked {% endif %}> <input type="submit" class="btn btn-default" value="Submit" onclick="return confirm('Are you sure?');" /></label>
+		                <label>
+		                	{% if process.isCompleted == False %} 
+					
+		                	<input type="checkbox" name="process" id="process{{ forloop.counter }}" value="{{ process.id }}" {% if process.isCompleted %} checked {% endif %}> 
+		                	<input type="submit" class="btn btn-default" value="Submit" onclick="return confirm('Are you sure?');" />
+		                	{% endif %}
+		                </label>
 		            </div>
 				</li>
 		    </ul>
