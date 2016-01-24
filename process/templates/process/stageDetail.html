@@ -1,3 +1,8 @@
+{% load staticfiles %} 
+<script type="" src="{% static 'process/bower_components/jquery/dist/jquery.js' %}"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'process/bower_components/bootstrap/dist/css/bootstrap_Lumen.css' %}" />
+<script type="" src="{% static 'process/bower_components/bootstrap/dist/js/bootstrap.js' %}"></script>
+
 <h1>{{ stage.title }}</h1><br>
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}

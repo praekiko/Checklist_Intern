@@ -1,16 +1,23 @@
-<!-- {% load staticfiles %} --> 
+{% load staticfiles %} 
+<script type="" src="{% static 'process/bower_components/jquery/dist/jquery.js' %}"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'process/bower_components/bootstrap/dist/css/bootstrap_Lumen.css' %}" />
+<script type="" src="{% static 'process/bower_components/bootstrap/dist/js/bootstrap.js' %}"></script>
 
-<!-- <link rel="stylesheet" type="text/css" href="{% static 'process/style.css' %}" /> -->
-
-<h1>Report</h1>
+<h1>Report List</h1>
 
 {% if latest_report_list %}
-    <ul>
-    {% for report in latest_report_list.all %}
-        <li><a href="{% url 'process:reportDetail' report.id %}">{{ report.title }}</a></li>
-        <!-- <li><a href="#">{{ report.title }}</a></li> -->
-    {% endfor %}
-    </ul>
+	<ul class="list-group">
+		{% for report in latest_report_list.all %}
+			<li class="list-group-item">
+				<button type="button" class="btn btn-default"><a href="{% url 'process:reportDetail' report.id %}">{{ report.title }}</a></button>
+				<b>End Date:</b> {{ report.endDate }}
+			</li>
+
+	        <!-- <li><a href="{% url 'process:reportDetail' report.id %}">{{ report.title }}</a></li> -->
+    	{% endfor %}
+	</ul>
+    
+
 {% else %}
     <p>No polls are available.</p>
 {% endif %}
