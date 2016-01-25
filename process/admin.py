@@ -10,6 +10,10 @@ class ReportAdmin(admin.ModelAdmin):
     list_filter = ['startDate']
     search_fields = ['title']
 
+class StageAdmin(admin.ModelAdmin):
+    model = Stage
+    list_display = ('title', 'completed_processes_count', 'all_processes_count', 'isStageCompleted')
+
 admin.site.register(Report, ReportAdmin)
-admin.site.register(Stage)
+admin.site.register(Stage, StageAdmin)
 admin.site.register(Process)

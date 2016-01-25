@@ -12,11 +12,10 @@
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
-
 {% for stage in report.stage.all %}
     <form action="{% url 'process:completedProcess' stage.id %}" method="post">
     	{% csrf_token %}
-    
+    {% if stage.isStageCompleted == False %} 
     <div class="panel panel-default">
 	  <!-- <div class="panel-heading"><a href="{% url 'process:stageDetail' stage.id %}">{{ stage.title }}</a></div> -->
 	  <div class="panel-heading">{{ stage.title }}</div>
@@ -47,6 +46,7 @@
 
 	  </div>
 	</div>
+	{% endif %}
 	</form>
     <!-- <label for="stage{{ forloop.counter }}"><a href="{% url 'process:stageDetail' stage.id %}">{{ stage.title }}</label><br /> -->
 {% endfor %}
