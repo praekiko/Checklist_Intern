@@ -14,6 +14,10 @@ class StageAdmin(admin.ModelAdmin):
     model = Stage
     list_display = ('title', 'completed_processes_count', 'all_processes_count', 'isStageCompleted')
 
+class ProcessAdmin(admin.ModelAdmin):
+    model = Process
+    list_display = ('title', 'isCompleted')
+
 admin.site.register(Report, ReportAdmin)
 admin.site.register(Stage, StageAdmin)
-admin.site.register(Process)
+admin.site.register(Process, ProcessAdmin)

@@ -3,37 +3,63 @@
 <link rel="stylesheet" type="text/css" href="{% static 'process/bower_components/bootstrap/dist/css/bootstrap_Lumen.css' %}" />
 <script type="" src="{% static 'process/bower_components/bootstrap/dist/js/bootstrap.js' %}"></script>
 
+<a href="{% url 'process:index' %}" class="btn btn-default" ><span class="glyphicon glyphicon-home" aria-hidden="true"></span> HOME</a><br>
 <h1>{{ report.title }}</h1>
-<a href="{% url 'process:index' %}" class="btn btn-default btn-xs" ><span class="glyphicon glyphicon-home" aria-hidden="true"></span> HOME</a><br>
 
 <b>Start Date:</b> {{ report.startDate }}<br>
 <b>End Date:</b> {{ report.endDate }}<br>
 <b>Description:</b> {{ report.description }}<br><br>
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+<div class="progress">
+  <div id="progressBarStage"class="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="{{ report.completed_stages_count }}" aria-valuemin="0" aria-valuemax="{{ report.stage.all.count }}">
+    {{ report.completed_stages_count }} / {{ report.stage.all.count }}
+  </div>
+</div>
 
+<script>	
+$(document).ready(function(){
+	var compledtedStageCount = {{ report.completed_stages_count }};
+	var currentWidth = "0%"
+	if(compledtedStageCount == 1){
+		currentWidth = "33%";
+	}
+	else if(compledtedStageCount == 2){
+		currentWidth = "66%";
+	}
+	else if(compledtedStageCount == 3){
+		currentWidth = "100%";
+	}
+    $("#progressBarStage").css({"width": currentWidth});
+    
+});
+</script>
+
+<!-- {{report.current_stage_shown}} -->
 {% for stage in report.stage.all %}
+	{% if stage.id == report.current_stage_shown %} 
     <form action="{% url 'process:completedProcess' stage.id %}" method="post">
     	{% csrf_token %}
-    {% if stage.isStageCompleted == False %} 
+    
     <div class="panel panel-default">
 	  <!-- <div class="panel-heading"><a href="{% url 'process:stageDetail' stage.id %}">{{ stage.title }}</a></div> -->
 	  <div class="panel-heading">{{ stage.title }}</div>
 	  <div class="panel-body">
+	  	
 	    {% for process in stage.process_set.all %}
 
 		    <ul class="list-group">
 		    	<li class="list-group-item">
 					{{ process.title }}
 					{% if process.isCompleted == True %} 
-						<span class="badge" >Completed</span>
+						<span class="badge" style="background-color: #28b62c;">Completed</span>
 					{% endif %}
 					<div class="checkbox">
 		                <label>
 		                	{% if process.isCompleted == False %} 
 					
 		                	<input type="checkbox" name="process" id="process{{ forloop.counter }}" value="{{ process.id }}" {% if process.isCompleted %} checked {% endif %}> 
-		                	<input type="submit" class="btn btn-default" value="Submit" onclick="return confirm('Are you sure?');" />
+		                	<input type="submit" class="btn btn-default" value="Completed" onclick="return confirm('Are you sure?');" />
 		                	{% endif %}
 		                </label>
 		            </div>
@@ -41,13 +67,17 @@
 		    </ul>
 
 		    
+		    
 		{% endfor %}
 
 
 	  </div>
 	</div>
-	{% endif %}
+	
+	
 	</form>
+
+	{% endif %}
     <!-- <label for="stage{{ forloop.counter }}"><a href="{% url 'process:stageDetail' stage.id %}">{{ stage.title }}</label><br /> -->
 {% endfor %}
 

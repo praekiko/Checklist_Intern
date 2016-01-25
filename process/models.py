@@ -35,8 +35,15 @@ class Report(models.Model):
 		for s in allStage:
 			if(s.isStageCompleted() == True):
 				completedSatgeCount +=1
-
 		return completedSatgeCount
+	def current_stage_shown(self):
+		allStage = self.stage.all()
+		currentSatgeId = 0
+		for s in allStage:
+			if(s.isStageCompleted() == False):
+				currentSatgeId = s.id
+				return currentSatgeId
+		
 
 class Process(models.Model):
 	stage = models.ForeignKey(Stage, on_delete = models.CASCADE)

@@ -6,18 +6,32 @@
 <h1>Report List</h1>
 
 {% if latest_report_list %}
-	<ul class="list-group">
-		{% for report in latest_report_list.all %}
-			<li class="list-group-item">
-				<a href="{% url 'process:reportDetail' report.id %}" class="btn btn-default">{{ report.title }}</a>
-				<b>End Date:</b> {{ report.endDate }}
-			</li>
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Tilte</th>
+				<th>End Date</th>
+				<th>Progress</th>
+			</tr>
+		</thead>
+		<tbody>			
+			{% for report in latest_report_list.all %}
+			<tr>
+				<td>
+					<a href="{% url 'process:reportDetail' report.id %}" class="btn btn-default">{{ report.title }} <span class="glyphicon glyphicon-menu-hamburger"></span></a>
+				</td>
+				<td>{{ report.endDate }}</td>
+				<td>
+					{{ report.completed_stages_count }} / {{ report.stage.all.count }}
 
-	        <!-- <li><a href="{% url 'process:reportDetail' report.id %}">{{ report.title }}</a></li> -->
-    	{% endfor %}
-	</ul>
-    
+				</td>
+
+			</tr>
+
+			{% endfor %}
+		</tbody>
+	</table>
 
 {% else %}
-    <p>No polls are available.</p>
+	<p>No polls are available.</p>
 {% endif %}
